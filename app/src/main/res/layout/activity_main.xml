@@ -11,15 +11,15 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:outlineAmbientShadowColor="#FF0000">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:textSize="20dp"
-            android:text="Overlay Clock">
-        </TextView>
+            android:text="Overlay Clock"
+            android:textSize="20dp"></TextView>
     </androidx.appcompat.widget.Toolbar>
 
 

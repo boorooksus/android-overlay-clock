@@ -14,8 +14,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -25,6 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,6 +44,10 @@ public class ServiceManager extends Service {
     View overlayView;
     TextView textView;
     private static Timer timer;  // 모니터링 타이머
+    String colorDayMode = "#d0d0d0";
+    String colorNightMode = "#303030";
+    boolean isDayMode = true;
+    LocalDateTime lastTime = LocalDateTime.now();
 
 
     @Nullable
@@ -95,6 +103,31 @@ public class ServiceManager extends Service {
 
         overlayView = inflate.inflate(R.layout.overlay_view, null);
         textView = overlayView.findViewById(R.id.textView4);
+
+        // 터치가 감지된 경우
+        overlayView.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getActionMasked() < 4 && ChronoUnit.SECONDS.between(lastTime, LocalDateTime.now()) > 0.3){
+                    Log.e("time", String.valueOf(ChronoUnit.SECONDS.between(lastTime, LocalDateTime.now())));
+
+                    lastTime = LocalDateTime.now();
+
+                    if(isDayMode){
+                        textView.setTextColor(Color.parseColor(colorNightMode));
+                    } else {
+                        textView.setTextColor(Color.parseColor(colorDayMode));
+                    }
+                    isDayMode = !isDayMode;
+
+                }
+
+                return true;
+            }
+        });
+
         // 오버레이 생성
         windowManager.addView(overlayView, params);
 
