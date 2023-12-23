@@ -45,7 +45,8 @@ public class ServiceManager extends Service {
     TextView textView;
     private static Timer timer;  // 모니터링 타이머
     String colorDayMode = "#d0d0d0";
-    String colorNightMode = "#303030";
+    String colorNightMode = "#757575";
+//    String colorNightMode = "#303030";
     boolean isDayMode = true;
     LocalDateTime lastTime = LocalDateTime.now();
 
@@ -91,7 +92,7 @@ public class ServiceManager extends Service {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 /*ViewGroup.LayoutParams.MATCH_PARENT*/300,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                30, 30, // X, Y 좌표
+                0, 0, // X, Y 좌표
                 TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -99,7 +100,7 @@ public class ServiceManager extends Service {
                 PixelFormat.TRANSLUCENT);
 
         // 오버레이 위치 설정
-        params.gravity = Gravity.RIGHT | Gravity.TOP;
+        params.gravity = Gravity.LEFT | Gravity.TOP;
 
         overlayView = inflate.inflate(R.layout.overlay_view, null);
         textView = overlayView.findViewById(R.id.textView4);
@@ -109,19 +110,27 @@ public class ServiceManager extends Service {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                int touchEvent = event.getActionMasked();
 
-                if(event.getActionMasked() < 4 && ChronoUnit.SECONDS.between(lastTime, LocalDateTime.now()) > 0.3){
-                    Log.e("time", String.valueOf(ChronoUnit.SECONDS.between(lastTime, LocalDateTime.now())));
+                if(touchEvent == MotionEvent.ACTION_UP) {
+                    long timeDiff = ChronoUnit.NANOS.between(lastTime, LocalDateTime.now());
 
-                    lastTime = LocalDateTime.now();
+                    if(timeDiff >= 100000000 && timeDiff < 1000000000){
+                        lastTime = LocalDateTime.now();
 
-                    if(isDayMode){
-                        textView.setTextColor(Color.parseColor(colorNightMode));
-                    } else {
-                        textView.setTextColor(Color.parseColor(colorDayMode));
+                        if(isDayMode){
+                            textView.setTextColor(Color.parseColor(colorNightMode));
+                        } else {
+                            textView.setTextColor(Color.parseColor(colorDayMode));
+                        }
+                        isDayMode = !isDayMode;
+
+                    } else{
+                        lastTime = LocalDateTime.now();
+
+                        params.gravity = Gravity.RIGHT | Gravity.TOP;
+
                     }
-                    isDayMode = !isDayMode;
-
                 }
 
                 return true;

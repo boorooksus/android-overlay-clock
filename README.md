@@ -1,7 +1,7 @@
 # 안드로이드 오버레이 시계
 
-내가 쓰려고 만든 오버레이 시계 앱. <br />
-비디오, E-book 어플을 사용할 때, 상태바가 사라진 상태에서도 현재 시간을 알 수 있게 해줍니다.
+비디오, E-book 어플을 사용할 때, 상태바가 사라진 상태에서도 현재 시간을 알 수 있게 해줍니다. <br />
+지하철과 버스에서 항상 시간을 확인하세요.<br />
 
 <img width="80%" align="center" alt="sample image" src="https://user-images.githubusercontent.com/55964775/215328635-37e4ad9c-4478-4ddf-8463-08a21001727f.png">
 <br />
